@@ -1,6 +1,7 @@
 package test;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -10,12 +11,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "test", entityManagerFactoryRef = "entityManagerFactory")
+@EnableJpaRepositories(basePackages = {"test"})
 @EnableTransactionManagement
+@ComponentScan(value = {"test"})
 public class SpringJPA_Config {
 
     @Bean
@@ -39,16 +40,14 @@ public class SpringJPA_Config {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
         factoryBean.setJpaVendorAdapter(adapter);
-        factoryBean.setPackagesToScan("test.Person");
+        factoryBean.setPackagesToScan("test");
 
         return factoryBean;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    public PlatformTransactionManager transactionManager() {
 
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory);
-        return txManager;
+        return new JpaTransactionManager(entityManagerFactory().getObject());
     }
 }

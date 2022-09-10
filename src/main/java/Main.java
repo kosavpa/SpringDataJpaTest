@@ -8,8 +8,12 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringJPA_Config.class);
 
-        PersonRepo repo = (PersonRepo) context.getBean("personRepo");
-        Person spange = new Person("spange", "bob", "sqaowich", "sbs@list.ru", 654);
-        repo.save(spange);
+        for(String names : context.getBeanDefinitionNames()){
+            System.out.println(names);
+        }
+
+        PersonRepo repo = (PersonRepo) context.getBean("repo");
+        Person sponge = new Person("Skuidvard", "Oktopopus", "Stounhenjovich", "rockFace@mail.ru", 654);
+        repo.save(sponge);
     }
 }
