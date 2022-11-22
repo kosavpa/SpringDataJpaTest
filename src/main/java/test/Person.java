@@ -4,7 +4,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "persons")
+@NamedQueries({
+        @NamedQuery(name = Person.NAMED_QUERY,
+                    query = "select distinct p from Person p")
+})
 public class Person {
+    public static final String NAMED_QUERY = "Person.findAllPerson";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -84,5 +89,17 @@ public class Person {
 
     public int getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                '}';
     }
 }
