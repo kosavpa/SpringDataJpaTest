@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -21,6 +22,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = {"test"})
 @EnableTransactionManagement
 @ComponentScan(value = {"test"})
+@EnableJpaAuditing(auditorAwareRef = "auditorAwareBean")
 public class SpringJPA_Config {
 
     @Bean

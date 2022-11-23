@@ -1,14 +1,24 @@
 package test;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Optional;
 
 @Entity
 @Table(name = "persons")
+@EntityListeners(AuditingEntityListener.class)
 @NamedQueries({
         @NamedQuery(name = Person.NAMED_QUERY,
                     query = "select distinct p from Person p")
 })
-public class Person {
+public class Person implements Serializable {
     public static final String NAMED_QUERY = "Person.findAllPerson";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +33,21 @@ public class Person {
     private String email;
     @Column(name = "phone_number")
     private int phoneNumber;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    @CreatedBy
+    @Column(name = "created_by")
+    private String createdBy;
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_madified_date")
+    private Date lastModifiedDate;
+    @LastModifiedBy
+    @Column(name = "last_madified_by")
+    private String lastModifiedBy;
 
     public Person(){}
 
@@ -89,6 +114,38 @@ public class Person {
 
     public int getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public Optional<Date> getCreatedDate() {
+        return Optional.of(createdDate);
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Optional<String> getCreatedBy() {
+        return Optional.of(createdBy);
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Optional<Date> getLastModifiedDate() {
+        return Optional.of(lastModifiedDate);
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Optional<String> getLastModifiedBy() {
+        return Optional.of(lastModifiedBy);
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override
